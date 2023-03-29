@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
 import Home from './pages/home/Home';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/login/Login';
-import BlogPosts from './pages/blogposts/Blogposts';
+import BlogPost from './pages/BlogPost/BlogPost';
+import Overview from './pages/Overview/Overview';
 import Navigation from './components/navigation/Navigation';
+
 
 
 function App() {
@@ -13,11 +15,12 @@ function App() {
 
   return (
     <div>
-        <Navigation />
+        <Navigation isAuth={isAuthenticated} toggleAuth={toggleIsAuthenticated} />
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/blog-overzicht" element={<BlogPosts/>}/>
+            <Route path="/login" element={<Login toggleAuth={toggleIsAuthenticated} />} />
+            <Route path="/blogposts" element={isAuthenticated ? <Overview /> : <Navigate to="/login" />} />
+            <Route path="/blogposts/:blogId" element={isAuthenticated ? <BlogPost /> : <Navigate to="/login" />} />
         </Routes>
     </div>
   );
